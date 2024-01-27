@@ -1,16 +1,39 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
-from config import Config
 
-db_engine = create_engine(Config.DATABASE_URI)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=db_engine))
 Base = declarative_base()
-Base.query = db_session.query_property()
 
 
-def init_db():
-    from piScan import models
+class Database:
+    def __init__(self):
+        self.engine = None
 
-    Base.metadata.create_all(bind=db_engine)
+    def init_db(self, db_uri):
+        self.engine = create_engine(db_uri)
+
+    def create_all(self):
+        from piScan import models
+        Base.metadata.create_all(bind=self.engine)
+
+    def __create_session(self):
+        db_session = scoped_session(sessionmaker(autocommit=False,
+                                                 autoflush=False,
+                                                 bind=self.engine))
+
+        return db_session
+
+    @contextmanager
+    def session(self):
+        session = self.__create_session()
+
+        try:
+            yield session
+            session.commit()
+
+        except Exception as e:
+            session.rollback()
+            raise
+
+        finally:
+            session.remove()

@@ -1,13 +1,14 @@
 from piScan.database.migrations import init_migrations, migrate
+from piScan.database.db import Database
 from config import Config
-from piScan.database.db import db_engine, init_db
 
 
 def main():
-    init_db()
+    db = Database()
+    db.init_db(Config.DATABASE_URI)
 
-    init_migrations(Config, db_engine)
-    migrate(Config, db_engine)
+    init_migrations(Config, db.engine)
+    migrate(Config, db.engine)
 
 
 if __name__ == '__main__':

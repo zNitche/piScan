@@ -5,8 +5,6 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from piScan.database.db import Base
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -16,7 +14,15 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata
+
+def get_target_metadata():
+    from piScan import models
+    from piScan.database.db import Base
+
+    return Base.metadata
+
+
+target_metadata = get_target_metadata()
 
 
 def run_migrations_offline() -> None:
