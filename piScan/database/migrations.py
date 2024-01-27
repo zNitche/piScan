@@ -14,7 +14,7 @@ def get_config(migrations_dir, db_engine):
 
 
 def init_migrations(app_config, db_engine):
-    migrations_dir = app_config["MIGRATIONS_DIR_PATH"]
+    migrations_dir = getattr(app_config, "MIGRATIONS_DIR_PATH")
 
     if not os.path.exists(migrations_dir):
         cfg = get_config(migrations_dir, db_engine)
@@ -22,12 +22,12 @@ def init_migrations(app_config, db_engine):
         command.init(cfg, migrations_dir)
         command.stamp(cfg, "head")
 
-        shutil.copy2(os.path.join(app_config["CURRENT_DIR"], "piScan", "database", "env.template.py"),
+        shutil.copy2(os.path.join(getattr(app_config, "CURRENT_DIR"), "piScan", "database", "env.template.py"),
                      os.path.join(migrations_dir, "env.py"))
 
 
-def migrate(migrations_dir, db_engine):
-    alembic_config = get_config(migrations_dir, db_engine)
+def migrate(app_config, db_engine):
+    alembic_config = get_config(getattr(app_config, "MIGRATIONS_DIR_PATH"), db_engine)
 
     with db_engine.begin() as connection:
         alembic_config.attributes["connection"] = connection
