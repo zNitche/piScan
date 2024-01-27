@@ -22,7 +22,9 @@ def init_migrations(app_config, db_engine):
         command.init(cfg, migrations_dir)
         command.stamp(cfg, "head")
 
-        shutil.copy2(os.path.join(getattr(app_config, "CURRENT_DIR"), "piScan", "database", "env.template.py"),
+        env_template_path = os.path.join("piScan", "database", "alembic_template", "env.template.py")
+
+        shutil.copy2(os.path.join(getattr(app_config, "CURRENT_DIR"), env_template_path),
                      os.path.join(migrations_dir, "env.py"))
 
 

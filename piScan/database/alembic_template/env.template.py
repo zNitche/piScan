@@ -51,8 +51,7 @@ def run_migrations_online() -> None:
 
     """
 
-    # references:
-    # http://alembic.zzzcomputing.com/en/latest/cookbook.html
+    # references: https://alembic.sqlalchemy.org/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
         script = directives[0]
         assert script.upgrade_ops is not None
