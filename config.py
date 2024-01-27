@@ -13,6 +13,6 @@ class Config:
 
     APP_PORT = 8080
     APP_HOST = "0.0.0.0"
-    DEBUG_MODE = os.getenv("DEBUG", 0)
+    DEBUG_MODE = int(os.getenv("DEBUG", 0))
 
     DATABASE_URI = f"sqlite:////{CURRENT_DIR}/database/app.sqlite3"

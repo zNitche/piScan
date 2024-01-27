@@ -10,6 +10,7 @@ db = Database()
 def register_blueprints(app):
     root_prefix = app.config["ROOT_URL_PREFIX"]
 
+    from piScan.blueprints import routes
     from piScan.blueprints.main.routes import main
     from piScan.blueprints.devices.routes import devices
 
