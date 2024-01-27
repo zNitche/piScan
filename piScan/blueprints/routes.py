@@ -1,4 +1,4 @@
-from piScan.db import db_session
+from piScan.database.db import db_session
 from flask import current_app
 
 

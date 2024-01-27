@@ -1,7 +1,8 @@
 from flask import Flask
 import os
 from config import Config
-from piScan.db import init_db
+from piScan.database.db import init_db, db_engine
+from piScan.database.migrations import init_migrations, migrate
 
 
 def register_blueprints(app):
@@ -22,6 +23,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     init_db()
+    init_migrations(app.config, db_engine)
+    migrate(app.config["MIGRATIONS_DIR_PATH"], db_engine)
 
     with app.app_context():
         register_blueprints(app)

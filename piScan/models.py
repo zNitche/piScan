@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from piScan.db import Base
+from piScan.database.db import Base
 
 
 class Printer(Base):
