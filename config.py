@@ -9,8 +9,6 @@ class Config:
     CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
     MIGRATIONS_DIR_PATH = os.path.join(CURRENT_DIR, "database", "migrations")
 
-    ROOT_URL_PREFIX = "/api"
-
     APP_PORT = 8080
     APP_HOST = "0.0.0.0"
     DEBUG_MODE = int(os.getenv("DEBUG", 0))
