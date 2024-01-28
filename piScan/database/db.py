@@ -32,12 +32,11 @@ class Database:
         return scoped_session(self.session_maker)
 
     def close_session(self, exception=None):
-        session = self.get_session()
+        if self.session:
+            if isinstance(exception, exc.SQLAlchemyError):
+                self.session.rollback()
 
-        if isinstance(exception, exc.SQLAlchemyError):
-            session.rollback()
-
-        session.remove()
+            self.session.remove()
 
     @contextmanager
     def session_context(self):
