@@ -16,7 +16,7 @@ class Database:
         self.session_maker = None
         self.session = None
 
-    def init_db(self, db_uri):
+    def setup(self, db_uri):
         self.engine = create_engine(db_uri)
         self.session_maker = self.__create_session_maker()
         self.session = self.get_session()
