@@ -15,6 +15,7 @@ def register_blueprints(app):
     from piScan import routes
 
     app.register_blueprint(routes.api)
+    app.register_blueprint(routes.docs)
 
 
 def init_modules(app):
