@@ -14,6 +14,7 @@ processes_manager = ProcessesManager()
 def register_blueprints(app):
     from piScan import routes
 
+    app.register_blueprint(routes.core)
     app.register_blueprint(routes.api)
 
     if app.config["HOST_DOCS"]:
