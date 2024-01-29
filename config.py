@@ -11,7 +11,9 @@ class Config:
 
     APP_PORT = 8000
     APP_HOST = "0.0.0.0"
+
     DEBUG_MODE = int(os.getenv("DEBUG", 0))
+    HOST_DOCS = int(os.getenv("HOST_DOCS", 0))
 
     DATABASE_URI = f"sqlite:////{CURRENT_DIR}/database/app.sqlite3"
     REDIS_URI = "127.0.0.1" if DEBUG_MODE else "redis"
