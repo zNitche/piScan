@@ -1,5 +1,5 @@
-from piScan.routes.api.api import api
-from piScan.routes.api.devices import devices
+from .api import api_bp
+from .devices import devices_bp
 
 
-api.register_blueprint(devices, url_prefix="/devices")
+api_bp.register_blueprint(devices_bp, url_prefix="/devices")

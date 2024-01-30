@@ -14,11 +14,11 @@ processes_manager = ProcessesManager()
 def register_blueprints(app):
     from piScan import routes
 
-    app.register_blueprint(routes.core)
-    app.register_blueprint(routes.api)
+    app.register_blueprint(routes.core_bp)
+    app.register_blueprint(routes.api_bp)
 
     if app.config["HOST_DOCS"]:
-        app.register_blueprint(routes.docs)
+        app.register_blueprint(routes.docs_bp)
 
 
 def init_modules(app):

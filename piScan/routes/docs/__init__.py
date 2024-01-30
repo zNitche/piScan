@@ -1,1 +1,1 @@
-from piScan.routes.docs.docs import docs
+from .docs import docs_bp

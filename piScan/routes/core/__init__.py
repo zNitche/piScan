@@ -1,1 +1,1 @@
-from piScan.routes.core.core import core
+from .core import core_bp
