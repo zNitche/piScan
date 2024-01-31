@@ -1,12 +1,10 @@
 from piScan.api_spec import spec
-from marshmallow import schema
-from config import Config
-import os
+from configs.config import Config
 import json
 
 
 def main():
-    with open(os.path.join(Config.CURRENT_DIR, "swagger.json"), "w") as file:
+    with open(Config.SWAGGER_SCHEMA_PATH, "w") as file:
         json_specs = json.dumps(spec.to_dict(), indent=2)
         file.write(json_specs)
 

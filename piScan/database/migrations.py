@@ -1,6 +1,7 @@
 from alembic import command, config
 import os
 import shutil
+from piScan import ROOT_DIR
 
 
 def get_config(migrations_dir, db_engine):
@@ -24,8 +25,7 @@ def init_migrations(app_config, db_engine):
 
         env_template_path = os.path.join("piScan", "database", "alembic_template", "env.template.py")
 
-        shutil.copy2(os.path.join(getattr(app_config, "CURRENT_DIR"), env_template_path),
-                     os.path.join(migrations_dir, "env.py"))
+        shutil.copy2(os.path.join(ROOT_DIR, env_template_path), os.path.join(migrations_dir, "env.py"))
 
 
 def migrate(app_config, db_engine):
