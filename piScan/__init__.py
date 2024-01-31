@@ -1,13 +1,11 @@
 from flask import Flask
 import os
-import dotenv
 from piScan.app_modules.redis_client import RedisClient
 from piScan.app_modules.processes_manager import ProcessesManager
 from piScan.database.db import Database
 
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-dotenv.load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
 db = Database()
 cache_client = RedisClient(0)
