@@ -1,18 +1,4 @@
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
-from piScan.schemas import device
-
-
-spec = APISpec(
-    title="piScan",
-    version="1.0.0",
-    openapi_version="3.0.2",
-    info=dict(description="API for piScan system"),
-    plugins=[MarshmallowPlugin()]
-)
-
-spec.components.schema("Device", schema=device.DeviceSchema)
-
+from api_docs.spec import spec
 
 spec.path(
     path="/api/devices",

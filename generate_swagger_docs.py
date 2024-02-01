@@ -1,4 +1,4 @@
-from piScan.api_spec import spec
+from api_docs import spec
 from configs.config import Config
 import json
 
