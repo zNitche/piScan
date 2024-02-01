@@ -1,9 +1,9 @@
-from piScan import create_app, ROOT_DIR
+from piScan import create_app, PROJECT_ROOT
 import dotenv
 import os
 
 
-dotenv.load_dotenv(os.path.join(ROOT_DIR, ".env"))
+dotenv.load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 app = create_app()
 

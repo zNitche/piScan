@@ -5,7 +5,8 @@ from piScan.app_modules.processes_manager import ProcessesManager
 from piScan.database.db import Database
 
 
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+APP_ROOT = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 db = Database()
 cache_client = RedisClient(0)

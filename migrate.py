@@ -7,8 +7,8 @@ def main():
     db = Database()
     db.setup(Config.DATABASE_URI)
 
-    init_migrations(Config, db.engine)
-    migrate(Config, db.engine)
+    init_migrations(Config.MIGRATIONS_DIR_PATH, db.engine)
+    migrate(Config.MIGRATIONS_DIR_PATH, db.engine)
 
 
 if __name__ == '__main__':
