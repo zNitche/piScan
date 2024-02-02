@@ -1,9 +1,12 @@
 from sqlalchemy import Column, Integer, String
 from piScan.database.db import Base
+import uuid
 
 
-class Printer(Base):
-    __tablename__ = "printers"
+class Device(Base):
+    __tablename__ = "devices"
 
     id = Column(Integer, primary_key=True)
+    uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
     name = Column(String(50), unique=True)
+    device_id = Column(String(100), unique=True)
