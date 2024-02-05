@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response, abort
+from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device
 from piScan.schemas.device import DeviceSchema
@@ -27,10 +27,8 @@ def add_device():
 
         return Response(status=201)
 
-    except ValidationError:
-        pass
-
-    abort(400)
+    except ValidationError as e:
+        return jsonify(error=str(e)), 400
 
 
 @devices_bp.route("/<uuid>", methods=["GET"])
