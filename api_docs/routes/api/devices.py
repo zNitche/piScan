@@ -1,8 +1,6 @@
 from api_docs.spec import spec
 
-
 spec.tag({"name": "Devices"})
-
 
 get_devices = {
     "tags": ["Devices"],
@@ -40,7 +38,6 @@ create_device = {
         }
     }
 }
-
 
 spec.path(
     path="/api/devices",
@@ -103,5 +100,77 @@ spec.path(
     operations={
         "get": get_device,
         "delete": remove_device,
+    },
+)
+
+add_format_to_device = {
+    "tags": ["Devices"],
+    "summary": "Add scan format to device",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "device_uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+        {
+            "in": "path",
+            "name": "format_uuid",
+            "schema": {
+                "type": "string"
+            }
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "scan format has been added successfully"
+        },
+        "400": {
+            "description": "error while adding scan format to device"
+        },
+        "404": {
+            "description": "device or scan format not found"
+        },
+    }
+}
+
+remove_format_for_device = {
+    "tags": ["Devices"],
+    "summary": "Remove scan format for device",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "device_uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+        {
+            "in": "path",
+            "name": "format_uuid",
+            "schema": {
+                "type": "string"
+            }
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "scan format has been removed successfully"
+        },
+        "400": {
+            "description": "error while removing scan format for device"
+        },
+        "404": {
+            "description": "device or scan format not found"
+        },
+    }
+}
+
+spec.path(
+    path="/api/devices/{device_uuid}/format/{format_uuid}",
+    operations={
+        "post": add_format_to_device,
+        "delete": remove_format_for_device
     },
 )
