@@ -89,3 +89,22 @@ def remove_scan_format_for_device(device_uuid, format_uuid):
         return Response(status=200)
 
     abort(400)
+
+
+@devices_bp.route("/<uuid>/resolutions", methods=["POST"])
+def add_scan_resolution_for_device(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    data = request.get_json()
+    is_valid = True if isinstance(data, list) and all(isinstance(res, int) for res in data) else False
+
+    if not is_valid:
+        abort(400)
+
+    device.resolutions = data
+    db.session.commit()
+
+    return Response(status=200)

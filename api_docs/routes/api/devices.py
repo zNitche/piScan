@@ -174,3 +174,47 @@ spec.path(
         "delete": remove_format_for_device
     },
 )
+
+add_scan_resolution_for_device = {
+    "tags": ["Devices"],
+    "summary": "Set device scan resolutions",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "requestBody": {
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "responses": {
+        "200": {
+            "description": "scan resolutions successfully updated"
+        },
+        "404": {
+            "description": "device not not found"
+        },
+        "400": {
+            "description": ""
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/{uuid}/resolutions",
+    operations={
+        "post": add_scan_resolution_for_device
+    },
+)

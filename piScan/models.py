@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship, mapped_column
 from piScan.database.db import Base
 import uuid
 
-device_format = Table(
-    "device_format",
+device_to_format = Table(
+    "device_to_format",
     Base.metadata,
     Column("device_id", ForeignKey("devices.id")),
     Column("format_id", ForeignKey("scan_formats.id")),
@@ -18,8 +18,19 @@ class Device(Base):
     uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
     name = Column(String(50), unique=True)
     device_id = Column(String(100), unique=True)
+    _resolutions = Column("resolutions", String)
 
-    scan_formats = relationship("ScanFormat", secondary=device_format, backref="device")
+    scan_formats = relationship("ScanFormat", secondary=device_to_format, backref="device")
+
+    @property
+    def resolutions(self):
+        items = self._resolutions.split(",") if self._resolutions else []
+
+        return [int(item) for item in items]
+
+    @resolutions.setter
+    def resolutions(self, resolutions_list):
+        self._resolutions = ",".join([str(elem) for elem in resolutions_list])
 
 
 class ScanFormat(Base):
