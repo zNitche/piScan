@@ -3,7 +3,6 @@ from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat
 from piScan.schemas.device import DeviceSchema
 from piScan import db
-from piScan import validators
 
 
 devices_bp = Blueprint("devices", __name__)
@@ -100,7 +99,7 @@ def add_scan_resolution_for_device(uuid):
         abort(404)
 
     data = request.get_json()
-    is_valid = validators.validate_resolutions(data)
+    is_valid = device.validate_resolutions(data)
 
     if not is_valid:
         abort(400)

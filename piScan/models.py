@@ -32,6 +32,11 @@ class Device(Base):
     def resolutions(self, resolutions_list):
         self._resolutions = ",".join([str(elem) for elem in resolutions_list])
 
+    @staticmethod
+    def validate_resolutions(resolutions_list):
+        return True if (isinstance(resolutions_list, list) and
+                        all(isinstance(res, int) for res in resolutions_list)) else False
+
 
 class ScanFormat(Base):
     __tablename__ = "scan_formats"
