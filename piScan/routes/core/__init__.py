@@ -1,1 +1,1 @@
-from .core import core_bp
+from .core import blueprint

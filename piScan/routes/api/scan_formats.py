@@ -5,10 +5,10 @@ from piScan.schemas.scan_format import ScanFormatSchema
 from piScan import db
 
 
-scan_formats_bp = Blueprint("scan_formats", __name__)
+blueprint = Blueprint("scan_formats", __name__)
 
 
-@scan_formats_bp.route("/", methods=["GET"])
+@blueprint.route("/", methods=["GET"])
 def get_scan_formats():
     schema = ScanFormatSchema(many=True)
     formats = schema.dump(db.session.query(ScanFormat).all())
@@ -16,7 +16,7 @@ def get_scan_formats():
     return formats
 
 
-@scan_formats_bp.route("/", methods=["POST"])
+@blueprint.route("/", methods=["POST"])
 def add_scan_format():
     try:
         schema = ScanFormatSchema().load(request.get_json())
@@ -31,7 +31,7 @@ def add_scan_format():
         return jsonify(error=str(e)), 400
 
 
-@scan_formats_bp.route("/<uuid>", methods=["GET"])
+@blueprint.route("/<uuid>", methods=["GET"])
 def get_scan_format(uuid):
     format = db.session.query(ScanFormat).filter_by(uuid=uuid).first()
 
@@ -43,7 +43,7 @@ def get_scan_format(uuid):
     return schema.dump(format)
 
 
-@scan_formats_bp.route("/<uuid>", methods=["DELETE"])
+@blueprint.route("/<uuid>", methods=["DELETE"])
 def remove_scan_format(uuid):
     format = db.session.query(ScanFormat).filter_by(uuid=uuid).first()
 

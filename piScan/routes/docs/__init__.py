@@ -1,1 +1,1 @@
-from .docs import docs_bp
+from .docs import blueprint

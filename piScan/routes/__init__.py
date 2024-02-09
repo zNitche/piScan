@@ -1,9 +1,9 @@
 from piScan import db
 from flask import current_app
 
-from piScan.routes.core import core_bp
-from piScan.routes.api import api_bp
-from piScan.routes.docs import docs_bp
+from piScan.routes import core
+from piScan.routes import api
+from piScan.routes import docs
 
 
 @current_app.after_request

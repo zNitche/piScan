@@ -5,10 +5,10 @@ from piScan.schemas.device import DeviceSchema
 from piScan import db
 
 
-devices_bp = Blueprint("devices", __name__)
+blueprint = Blueprint("devices", __name__)
 
 
-@devices_bp.route("/", methods=["GET"])
+@blueprint.route("/", methods=["GET"])
 def get_devices():
     schema = DeviceSchema(many=True)
     printers = schema.dump(db.session.query(Device).all())
@@ -16,7 +16,7 @@ def get_devices():
     return printers
 
 
-@devices_bp.route("/", methods=["POST"])
+@blueprint.route("/", methods=["POST"])
 def add_device():
     try:
         schema = DeviceSchema().load(request.get_json())
@@ -31,7 +31,7 @@ def add_device():
         return jsonify(error=str(e)), 400
 
 
-@devices_bp.route("/<uuid>", methods=["GET"])
+@blueprint.route("/<uuid>", methods=["GET"])
 def get_device(uuid):
     device = db.session.query(Device).filter_by(uuid=uuid).first()
 
@@ -44,7 +44,7 @@ def get_device(uuid):
     return dumped_device
 
 
-@devices_bp.route("/<uuid>", methods=["DELETE"])
+@blueprint.route("/<uuid>", methods=["DELETE"])
 def remove_device(uuid):
     device = db.session.query(Device).filter_by(uuid=uuid).first()
 
@@ -57,7 +57,7 @@ def remove_device(uuid):
     return Response(status=200)
 
 
-@devices_bp.route("/<device_uuid>/format/<format_uuid>", methods=["POST"])
+@blueprint.route("/<device_uuid>/format/<format_uuid>", methods=["POST"])
 def add_scan_format_to_device(device_uuid, format_uuid):
     device = db.session.query(Device).filter_by(uuid=device_uuid).first()
     scan_format = db.session.query(ScanFormat).filter_by(uuid=format_uuid).first()
@@ -74,7 +74,7 @@ def add_scan_format_to_device(device_uuid, format_uuid):
     abort(400)
 
 
-@devices_bp.route("/<device_uuid>/format/<format_uuid>", methods=["DELETE"])
+@blueprint.route("/<device_uuid>/format/<format_uuid>", methods=["DELETE"])
 def remove_scan_format_for_device(device_uuid, format_uuid):
     device = db.session.query(Device).filter_by(uuid=device_uuid).first()
     scan_format = db.session.query(ScanFormat).filter_by(uuid=format_uuid).first()
@@ -91,7 +91,7 @@ def remove_scan_format_for_device(device_uuid, format_uuid):
     abort(400)
 
 
-@devices_bp.route("/<uuid>/resolutions", methods=["POST"])
+@blueprint.route("/<uuid>/resolutions", methods=["POST"])
 def add_scan_resolution_for_device(uuid):
     device = db.session.query(Device).filter_by(uuid=uuid).first()
 
