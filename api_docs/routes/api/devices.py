@@ -183,7 +183,7 @@ add_scan_resolution_for_device = {
             "in": "path",
             "name": "uuid",
             "schema": {
-                "type": "number"
+                "type": "string"
             }
         },
     ],
@@ -193,7 +193,7 @@ add_scan_resolution_for_device = {
                 "schema": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "number"
                     }
                 }
             }
@@ -216,5 +216,45 @@ spec.path(
     path="/api/devices/{uuid}/resolutions",
     operations={
         "post": add_scan_resolution_for_device
+    },
+)
+
+device_health_check = {
+    "tags": ["Devices"],
+    "summary": "Check if device is available",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "responses": {
+        "200": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "is_available": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "404": {
+            "description": "device not not found"
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/{uuid}/health-check",
+    operations={
+        "get": device_health_check
     },
 )

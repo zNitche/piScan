@@ -3,6 +3,7 @@ from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat
 from piScan.schemas.device import DeviceSchema
 from piScan import db, exceptions
+from piScan.utils import device_utils
 
 
 blueprint = Blueprint("devices", __name__)
@@ -106,3 +107,15 @@ def add_scan_resolution_for_device(uuid):
         return jsonify(error=str(e)), 400
 
     return Response(status=200)
+
+
+@blueprint.route("/<uuid>/health-check", methods=["GET"])
+def device_health_check(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    is_available = device_utils.check_device_availability(device.device_id)
+
+    return jsonify(is_available=is_available), 200
