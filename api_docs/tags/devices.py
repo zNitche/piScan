@@ -1,9 +1,10 @@
 from api_docs.spec import spec
 
-spec.tag({"name": "Devices"})
+TAG = "Devices"
+spec.tag({"name": TAG})
 
 get_devices = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Get Devices",
     "responses": {
         "200": {
@@ -20,7 +21,7 @@ get_devices = {
 }
 
 create_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Create device",
     "requestBody": {
         "content": {
@@ -48,7 +49,7 @@ spec.path(
 )
 
 get_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Get device by uuid",
     "parameters": [
         {
@@ -74,7 +75,7 @@ get_device = {
 }
 
 remove_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Delete device by uuid",
     "parameters": [
         {
@@ -104,7 +105,7 @@ spec.path(
 )
 
 add_format_to_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Add scan format to device",
     "parameters": [
         {
@@ -136,7 +137,7 @@ add_format_to_device = {
 }
 
 remove_format_for_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Remove scan format for device",
     "parameters": [
         {
@@ -176,7 +177,7 @@ spec.path(
 )
 
 add_scan_resolution_for_device = {
-    "tags": ["Devices"],
+    "tags": [TAG],
     "summary": "Set device scan resolutions",
     "parameters": [
         {
@@ -216,91 +217,5 @@ spec.path(
     path="/api/devices/{uuid}/resolutions",
     operations={
         "post": add_scan_resolution_for_device
-    },
-)
-
-device_health_check = {
-    "tags": ["Devices"],
-    "summary": "Check if device is available",
-    "parameters": [
-        {
-            "in": "path",
-            "name": "uuid",
-            "schema": {
-                "type": "string"
-            }
-        },
-    ],
-    "responses": {
-        "200": {
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "is_available": {
-                                "type": "boolean"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "404": {
-            "description": "device not not found"
-        }
-    }
-}
-
-spec.path(
-    path="/api/devices/{uuid}/health-check",
-    operations={
-        "get": device_health_check
-    },
-)
-
-perform_scan = {
-    "tags": ["Devices"],
-    "summary": "Perform scan",
-    "parameters": [
-        {
-            "in": "path",
-            "name": "uuid",
-            "schema": {
-                "type": "string"
-            }
-        },
-    ],
-    "requestBody": {
-        "content": {
-            "application/json": {
-                "schema": {
-                    "type": "object",
-                    "properties": {
-                        "resolution": {
-                            "type": "number"
-                        },
-                        "extension": {
-                            "type": "string"
-                        },
-                    }
-                }
-            }
-        }
-    },
-    "responses": {
-        "200": {
-            "description": "ok"
-        },
-        "404": {
-            "description": "device not not found"
-        }
-    }
-}
-
-spec.path(
-    path="/api/devices/{uuid}/scan",
-    operations={
-        "post": perform_scan
     },
 )
