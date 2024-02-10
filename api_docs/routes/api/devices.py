@@ -183,7 +183,7 @@ add_scan_resolution_for_device = {
             "in": "path",
             "name": "uuid",
             "schema": {
-                "type": "string"
+                "type": "number"
             }
         },
     ],

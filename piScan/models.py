@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.orm import relationship, mapped_column
 from piScan.database.db import Base
+from piScan import exceptions
 import uuid
 
 device_to_format = Table(
@@ -30,12 +31,14 @@ class Device(Base):
 
     @resolutions.setter
     def resolutions(self, resolutions_list):
-        self._resolutions = ",".join([str(elem) for elem in resolutions_list])
+        is_valid = True if (isinstance(resolutions_list, list) and
+                            all(isinstance(res, int) for res in resolutions_list)) else False
 
-    @staticmethod
-    def validate_resolutions(resolutions_list):
-        return True if (isinstance(resolutions_list, list) and
-                        all(isinstance(res, int) for res in resolutions_list)) else False
+        if not is_valid:
+            raise exceptions.ModelValidationError("resolutions validation error, "
+                                                  "should be array of integers")
+
+        self._resolutions = ",".join([str(elem) for elem in resolutions_list])
 
 
 class ScanFormat(Base):

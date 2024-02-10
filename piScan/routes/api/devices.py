@@ -2,7 +2,7 @@ from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat
 from piScan.schemas.device import DeviceSchema
-from piScan import db
+from piScan import db, exceptions
 
 
 blueprint = Blueprint("devices", __name__)
@@ -98,13 +98,11 @@ def add_scan_resolution_for_device(uuid):
     if not device:
         abort(404)
 
-    data = request.get_json()
-    is_valid = device.validate_resolutions(data)
+    try:
+        device.resolutions = request.get_json()
+        db.session.commit()
 
-    if not is_valid:
-        abort(400)
-
-    device.resolutions = data
-    db.session.commit()
+    except exceptions.ModelValidationError as e:
+        return jsonify(error=str(e)), 400
 
     return Response(status=200)
