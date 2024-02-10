@@ -258,3 +258,49 @@ spec.path(
         "get": device_health_check
     },
 )
+
+perform_scan = {
+    "tags": ["Devices"],
+    "summary": "Perform scan",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "requestBody": {
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "resolution": {
+                            "type": "number"
+                        },
+                        "extension": {
+                            "type": "string"
+                        },
+                    }
+                }
+            }
+        }
+    },
+    "responses": {
+        "200": {
+            "description": "ok"
+        },
+        "404": {
+            "description": "device not not found"
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/{uuid}/scan",
+    operations={
+        "post": perform_scan
+    },
+)

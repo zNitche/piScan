@@ -4,6 +4,7 @@ from piScan import PROJECT_ROOT
 
 class Config:
     MIGRATIONS_DIR_PATH = os.path.join(PROJECT_ROOT, "database", "migrations")
+    SCAN_FILES_DIR_PATH = os.path.join(PROJECT_ROOT, "files", "scans")
 
     APP_PORT = 8000
     APP_HOST = "0.0.0.0"

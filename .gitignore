@@ -2,6 +2,7 @@
 __pycache__
 logs/
 database/
+files/
 *.sqlite3
 .env
 *.json

@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 from piScan.app_modules.redis_client import RedisClient
-from piScan.app_modules.processes_manager import ProcessesManager
+from piScan.app_modules.devices_processes_manager import DevicesProcessesManager
 from piScan.database.db import Database
 
 
@@ -10,7 +10,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 db = Database()
 cache_client = RedisClient(0)
-processes_manager = ProcessesManager()
+devices_processes_manager = DevicesProcessesManager()
 
 
 def register_blueprints(app):
@@ -32,10 +32,10 @@ def init_modules(app):
 
     cache_client.setup(redis_url, redis_port)
 
-    processes_manager_cache_client = RedisClient(1)
-    processes_manager_cache_client.setup(redis_url, redis_port)
+    devices_processes_manager_cache_client = RedisClient(1)
+    devices_processes_manager_cache_client.setup(redis_url, redis_port)
 
-    processes_manager.setup(processes_manager_cache_client)
+    devices_processes_manager.setup(devices_processes_manager_cache_client)
 
 
 def create_app(config_class=None):

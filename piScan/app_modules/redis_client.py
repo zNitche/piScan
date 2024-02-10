@@ -45,15 +45,10 @@ class RedisClient:
             session.set(key, json.dumps(value))
 
     def get_value(self, key):
-        value = None
-
         with self.db_session() as session:
             data = session.get(key)
 
-        if data:
-            value = json.loads(data)
-
-        return value
+        return json.loads(data) if data else None
 
     def get_keys(self):
         with self.db_session() as session:

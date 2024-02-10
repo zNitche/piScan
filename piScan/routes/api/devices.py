@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response, abort, jsonify
+from flask import Blueprint, request, Response, abort, jsonify, current_app
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat
 from piScan.schemas.device import DeviceSchema
@@ -119,3 +119,28 @@ def device_health_check(uuid):
     is_available = device_utils.check_device_availability(device.device_id)
 
     return jsonify(is_available=is_available), 200
+
+
+@blueprint.route("/<uuid>/scan", methods=["POST"])
+def run_scan(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    parameters = request.get_json()
+    resolution = parameters.get("resolution")
+    extension = parameters.get("extension")
+
+    if resolution is None or extension is None:
+        return jsonify(error="one of following parameters missing: resolution, extension"), 400
+
+    scan_format = db.session.query(ScanFormat).filter_by(name=extension).first()
+
+    if resolution not in device.resolutions or scan_format not in device.scan_formats:
+        return jsonify(error="unsupported resolution or extension"), 400
+
+    file_uuid = device_utils.perform_scan(device.device_id, current_app.config["SCAN_FILES_DIR_PATH"],
+                                          extension, resolution)
+
+    return Response(status=200 if file_uuid else 400)
