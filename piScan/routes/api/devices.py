@@ -121,6 +121,21 @@ def device_health_check(uuid):
     return jsonify(is_available=is_available), 200
 
 
+@blueprint.route("/<uuid>/options", methods=["GET"])
+def device_options(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    options = device_utils.get_device_options(device.device_id)
+
+    if options is None:
+        return jsonify(error="device might be unavailable"), 500
+
+    return options, 200
+
+
 @blueprint.route("/<uuid>/scan", methods=["POST"])
 def run_scan(uuid):
     device = db.session.query(Device).filter_by(uuid=uuid).first()
@@ -143,4 +158,4 @@ def run_scan(uuid):
     file_uuid = device_utils.perform_scan(device.device_id, current_app.config["SCAN_FILES_DIR_PATH"],
                                           extension, resolution)
 
-    return Response(status=200 if file_uuid else 400)
+    return Response(status=200 if file_uuid else 500)

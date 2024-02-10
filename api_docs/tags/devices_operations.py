@@ -3,7 +3,6 @@ from api_docs.spec import spec
 TAG = "Devices Operations"
 spec.tag({"name": TAG})
 
-
 device_health_check = {
     "tags": [TAG],
     "summary": "Check if device is available",
@@ -44,6 +43,38 @@ spec.path(
     },
 )
 
+device_options = {
+    "tags": [TAG],
+    "summary": "Get device options",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "responses": {
+        "200": {
+            "description": "ok"
+        },
+        "404": {
+            "description": "device not not found"
+        },
+        "500": {
+            "description": ""
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/{uuid}/options",
+    operations={
+        "get": device_options
+    },
+)
+
 perform_scan = {
     "tags": [TAG],
     "summary": "Perform scan",
@@ -79,6 +110,9 @@ perform_scan = {
         },
         "404": {
             "description": "device not not found"
+        },
+        "500": {
+            "description": ""
         }
     }
 }
