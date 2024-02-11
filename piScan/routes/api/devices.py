@@ -177,7 +177,7 @@ def run_scan(uuid):
 
         devices_processes_manager.set_device_availability_state(device.device_id, True)
 
-        file = ScanFile(name=file_name)
+        file = ScanFile(uuid=file_uuid, name=file_name, extension=extension)
         db.session.add(file)
         db.session.commit()
 

@@ -83,11 +83,11 @@ def get_device_options(device_id):
         return None
 
 
-def perform_scan(device_id, file_path, extension, resolution, update_progress_callback=None):
+def perform_scan(device_id, files_root_path, extension, resolution, update_progress_callback=None):
     tmp_file_prefix = "piscan_file_"
     file_uuid = uuid.uuid4().hex
     file_tmp_path = os.path.join(tempfile.gettempdir(), f"{tmp_file_prefix}{file_uuid}")
-    file_target_path = os.path.join(file_path, file_uuid)
+    file_target_path = os.path.join(files_root_path, file_uuid)
 
     cmd = f"scanimage -d {device_id} --progress --resolution {resolution} --format {extension} > {file_tmp_path}"
 
@@ -103,7 +103,7 @@ def perform_scan(device_id, file_path, extension, resolution, update_progress_ca
                     regex = re.compile("Progress:(.*?)%")
                     result = regex.search(row)
 
-                    progress = float(result.group(1).strip())
+                    progress = int(result.group(1).strip())
                     update_progress_callback(device_id, progress)
 
         if os.path.exists(file_tmp_path):
@@ -112,4 +112,4 @@ def perform_scan(device_id, file_path, extension, resolution, update_progress_ca
     except subprocess.CalledProcessError:
         pass
 
-    return file_uuid if os.path.exists(file_path) else None
+    return file_uuid if os.path.exists(file_target_path) else None
