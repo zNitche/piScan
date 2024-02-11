@@ -109,7 +109,18 @@ perform_scan = {
     },
     "responses": {
         "200": {
-            "description": "ok"
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "file_uuid": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         },
         "404": {
             "description": "device not not found"

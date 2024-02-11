@@ -57,4 +57,7 @@ class ScanFile(Base):
     uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
     name = Column(String(100), nullable=True)
     extension = Column(String(5), nullable=False)
+    width = Column(Integer, nullable=False)
+    height = Column(Integer, nullable=False)
+    size = Column(Integer, nullable=False)
     created_at = Column(DATETIME, default=datetime.now)

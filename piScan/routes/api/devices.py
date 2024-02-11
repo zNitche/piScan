@@ -3,7 +3,7 @@ from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat, ScanFile
 from piScan.schemas.device import DeviceSchema
 from piScan import db, exceptions, devices_processes_manager
-from piScan.utils import device_utils
+from piScan.utils import device_utils, files_utils
 
 
 blueprint = Blueprint("devices", __name__)
@@ -171,17 +171,23 @@ def run_scan(uuid):
 
         devices_processes_manager.set_device_availability_state(device.device_id, False)
 
-        file_uuid = device_utils.perform_scan(device.device_id, current_app.config["SCAN_FILES_DIR_PATH"],
-                                              extension, resolution,
+        files_root_path = current_app.config["SCAN_FILES_DIR_PATH"]
+        file_uuid = device_utils.perform_scan(device.device_id, files_root_path, extension, resolution,
                                               update_progress_callback=devices_processes_manager.set_scan_progress_for_device)
 
         devices_processes_manager.set_device_availability_state(device.device_id, True)
 
-        file = ScanFile(uuid=file_uuid, name=file_name, extension=extension)
+        if not file_uuid:
+            abort(500)
+
+        width, height, size = files_utils.get_file_details(files_root_path, file_uuid)
+
+        file = ScanFile(uuid=file_uuid, name=file_name, extension=extension,
+                        width=width, height=height, size=size)
         db.session.add(file)
         db.session.commit()
 
-        return Response(status=200 if file_uuid else 500)
+        return jsonify(file_uuid=file_uuid), 200
 
     else:
         return jsonify(error="device is currently unavailable"), 500
