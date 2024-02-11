@@ -23,9 +23,7 @@ def parse_device_options(options_output):
 
         if 1 < index < len(options_output) - 1:
             if current_row.endswith(":"):
-                section = current_row.replace(":", "")
-
-                current_section = section
+                current_section = current_row.replace(":", "")
 
             elif current_row.startswith("-"):
                 current_parameter["name"] = current_row.replace("-", "")
@@ -43,7 +41,7 @@ def parse_device_options(options_output):
                     current_parameters.append(this_row_parameter.copy())
 
             if this_row_section and this_row_section != current_section:
-                options.append({"name": current_section, "parameters": current_parameters})
+                options.append({"name": this_row_section, "parameters": current_parameters})
 
                 current_parameter = {}
                 current_parameters = []
