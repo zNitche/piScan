@@ -103,7 +103,7 @@ def perform_scan(device_id, files_root_path, extension, resolution, update_progr
                     regex = re.compile("Progress:(.*?)%")
                     result = regex.search(row)
 
-                    progress = int(result.group(1).strip())
+                    progress = int(float(result.group(1).strip()))
                     update_progress_callback(device_id, progress)
 
         if os.path.exists(file_tmp_path):
