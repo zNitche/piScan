@@ -17,46 +17,44 @@ def parse_device_options(options_output):
     for index, row in enumerate(options_output):
         current_row = row.strip()
 
+        this_row_section = current_section
+        this_row_parameter = current_parameter.copy()
+        this_row_parameter_name = this_row_parameter.get("name")
+
         if 1 < index < len(options_output) - 1:
             if current_row.endswith(":"):
                 section = current_row.replace(":", "")
 
-                if section != current_section:
-                    if current_section:
-                        current_parameter_name = current_parameter.get("name")
-
-                        if current_parameter_name:
-                            parameter_prefix = "--" if current_row.startswith("--") else "-"
-                            current_parameter["name"] = f"{parameter_prefix}{current_parameter_name}"
-
-                            current_parameters.append(current_parameter.copy())
-
-                        options.append({"name": current_section, "parameters": current_parameters})
-
-                        current_parameter = {}
-                        current_parameters = []
-
-                    current_section = section
+                current_section = section
 
             elif current_row.startswith("-"):
-                parameter_name = current_row.replace("-", "")
-                current_parameter_name = current_parameter.get("name")
-
-                if parameter_name != current_parameter_name:
-                    if current_parameter_name:
-                        parameter_prefix = "--" if current_row.startswith("--") else "-"
-                        current_parameter["name"] = f"{parameter_prefix}{current_parameter_name}"
-
-                        current_parameters.append(current_parameter.copy())
-
-                    current_parameter["name"] = parameter_name
-                    current_parameter["description"] = ""
+                current_parameter["name"] = current_row.replace("-", "")
+                current_parameter["description"] = ""
 
             else:
                 if current_parameter.get("name"):
                     current_parameter["description"] += f"{current_row}\n"
 
+            if (this_row_parameter_name != current_parameter.get("name")) or (this_row_section != current_section):
+                if this_row_parameter_name:
+                    parameter_prefix = "--" if current_row.startswith("--") else "-"
+                    this_row_parameter["name"] = f"{parameter_prefix}{this_row_parameter_name}"
+
+                    current_parameters.append(this_row_parameter.copy())
+
+            if this_row_section and this_row_section != current_section:
+                options.append({"name": current_section, "parameters": current_parameters})
+
+                current_parameter = {}
+                current_parameters = []
+
         elif index == len(options_output) - 1:
+            if this_row_parameter_name:
+                parameter_prefix = "--" if current_row.startswith("--") else "-"
+                this_row_parameter["name"] = f"{parameter_prefix}{this_row_parameter_name}"
+
+                current_parameters.append(this_row_parameter.copy())
+
             options.append({"name": current_section, "parameters": current_parameters})
 
     parsed_output = {
