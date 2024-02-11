@@ -55,5 +55,6 @@ class ScanFile(Base):
 
     id = mapped_column(Integer, primary_key=True)
     uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
-    name = Column(String(100), unique=False, nullable=True)
+    name = Column(String(100), nullable=True)
+    extension = Column(String(5), nullable=False)
     created_at = Column(DATETIME, default=datetime.now)

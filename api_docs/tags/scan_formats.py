@@ -1,11 +1,12 @@
 from api_docs.spec import spec
 
 
-spec.tag({"name": "Scan Formats"})
+TAG = "Scan Formats"
+spec.tag({"name": TAG})
 
 
 get_scan_formats = {
-    "tags": ["Scan Formats"],
+    "tags": [TAG],
     "summary": "Get Scan Formats",
     "responses": {
         "200": {
@@ -22,7 +23,7 @@ get_scan_formats = {
 }
 
 create_scan_format = {
-    "tags": ["Scan Formats"],
+    "tags": [TAG],
     "summary": "Create Scan Format",
     "requestBody": {
         "content": {
@@ -51,7 +52,7 @@ spec.path(
 )
 
 get_scan_format = {
-    "tags": ["Scan Formats"],
+    "tags": [TAG],
     "summary": "Get Scan Format by uuid",
     "parameters": [
         {
@@ -77,7 +78,7 @@ get_scan_format = {
 }
 
 remove_scan_format = {
-    "tags": ["Scan Formats"],
+    "tags": [TAG],
     "summary": "Delete Scan Format by uuid",
     "parameters": [
         {

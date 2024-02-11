@@ -23,6 +23,8 @@ class Database:
 
     def create_all(self):
         from piScan import models
+        from piScan.database import events
+
         Base.metadata.create_all(bind=self.engine)
 
     def __create_session_maker(self):
@@ -37,6 +39,12 @@ class Database:
                 self.session.rollback()
 
             self.session.remove()
+
+    def update_instance(self, instance, update_dict):
+        for key, value in update_dict.items():
+            setattr(instance, key, value)
+
+        self.session.commit()
 
     @contextmanager
     def session_context(self):
