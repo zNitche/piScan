@@ -1,7 +1,7 @@
 import subprocess
 import uuid
 import os
-import sys
+import re
 
 
 def parse_device_options(options_output):
@@ -81,7 +81,7 @@ def get_device_options(device_id):
         return None
 
 
-def perform_scan(device_id, file_path, extension, resolution):
+def perform_scan(device_id, file_path, extension, resolution, update_progress_callback=None):
     file_uuid = uuid.uuid4().hex
     file_path = os.path.join(file_path, file_uuid)
 
@@ -94,7 +94,13 @@ def perform_scan(device_id, file_path, extension, resolution):
                                    universal_newlines=True)
 
         for row in process.stdout:
-           print(row, file=sys.stdout)
+            if update_progress_callback:
+                if "Progress:" in row:
+                    regex = re.compile("Progress:(.*?)%")
+                    result = regex.search(row)
+
+                    progress = float(result.group(1).strip())
+                    update_progress_callback(device_id, progress)
 
     except subprocess.CalledProcessError:
         pass

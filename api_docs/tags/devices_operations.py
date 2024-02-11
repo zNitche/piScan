@@ -123,3 +123,49 @@ spec.path(
         "post": perform_scan
     },
 )
+
+scan_progress = {
+    "tags": [TAG],
+    "summary": "Get device scan progress",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "responses": {
+        "200": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "progress": {
+                                "type": "number"
+                            },
+                            "is_running": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "404": {
+            "description": "device not not found"
+        },
+        "500": {
+            "description": ""
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/{uuid}/scan/progress",
+    operations={
+        "get": scan_progress
+    },
+)

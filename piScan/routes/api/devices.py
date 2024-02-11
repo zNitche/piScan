@@ -2,7 +2,7 @@ from flask import Blueprint, request, Response, abort, jsonify, current_app
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat
 from piScan.schemas.device import DeviceSchema
-from piScan import db, exceptions
+from piScan import db, exceptions, devices_processes_manager
 from piScan.utils import device_utils
 
 
@@ -136,6 +136,18 @@ def device_options(uuid):
     return options, 200
 
 
+@blueprint.route("/<uuid>/scan/progress", methods=["GET"])
+def scan_progress(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    progress, is_running = devices_processes_manager.get_scan_progress_for_device(device.device_id)
+
+    return jsonify(progress=progress, is_running=is_running), 200
+
+
 @blueprint.route("/<uuid>/scan", methods=["POST"])
 def run_scan(uuid):
     device = db.session.query(Device).filter_by(uuid=uuid).first()
@@ -147,15 +159,24 @@ def run_scan(uuid):
     resolution = parameters.get("resolution")
     extension = parameters.get("extension")
 
-    if resolution is None or extension is None:
-        return jsonify(error="one of following parameters missing: resolution, extension"), 400
+    if devices_processes_manager.get_device_availability_state(device.device_id):
+        if resolution is None or extension is None:
+            return jsonify(error="one of following parameters missing: resolution, extension"), 400
 
-    scan_format = db.session.query(ScanFormat).filter_by(name=extension).first()
+        scan_format = db.session.query(ScanFormat).filter_by(name=extension).first()
 
-    if resolution not in device.resolutions or scan_format not in device.scan_formats:
-        return jsonify(error="unsupported resolution or extension"), 400
+        if resolution not in device.resolutions or scan_format not in device.scan_formats:
+            return jsonify(error="unsupported resolution or extension"), 400
 
-    file_uuid = device_utils.perform_scan(device.device_id, current_app.config["SCAN_FILES_DIR_PATH"],
-                                          extension, resolution)
+        devices_processes_manager.set_device_availability_state(device.device_id, False)
 
-    return Response(status=200 if file_uuid else 500)
+        file_uuid = device_utils.perform_scan(device.device_id, current_app.config["SCAN_FILES_DIR_PATH"],
+                                              extension, resolution,
+                                              update_progress_callback=devices_processes_manager.set_scan_progress_for_device)
+
+        devices_processes_manager.set_device_availability_state(device.device_id, True)
+
+        return Response(status=200 if file_uuid else 500)
+
+    else:
+        return jsonify(error="device is currently unavailable"), 500
