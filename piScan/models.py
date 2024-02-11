@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Table, ForeignKey
+from sqlalchemy import Column, Integer, String, Table, ForeignKey, DATETIME
 from sqlalchemy.orm import relationship, mapped_column
 from piScan.database.db import Base
 from piScan import exceptions
 import uuid
+from datetime import datetime
 
 device_to_format = Table(
     "device_to_format",
@@ -47,3 +48,12 @@ class ScanFormat(Base):
     id = mapped_column(Integer, primary_key=True)
     uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
     name = Column(String(5), unique=True)
+
+
+class ScanFile(Base):
+    __tablename__ = "scan_files"
+
+    id = mapped_column(Integer, primary_key=True)
+    uuid = Column(String(32), unique=True, default=lambda: uuid.uuid4().hex)
+    name = Column(String(100), unique=False, nullable=True)
+    created_at = Column(DATETIME, default=datetime.now)

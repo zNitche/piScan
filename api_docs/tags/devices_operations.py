@@ -93,6 +93,9 @@ perform_scan = {
                 "schema": {
                     "type": "object",
                     "properties": {
+                        "file_name": {
+                            "type": "string"
+                        },
                         "resolution": {
                             "type": "number"
                         },

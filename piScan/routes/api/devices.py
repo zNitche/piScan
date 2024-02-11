@@ -1,6 +1,6 @@
 from flask import Blueprint, request, Response, abort, jsonify, current_app
 from marshmallow.exceptions import ValidationError
-from piScan.models import Device, ScanFormat
+from piScan.models import Device, ScanFormat, ScanFile
 from piScan.schemas.device import DeviceSchema
 from piScan import db, exceptions, devices_processes_manager
 from piScan.utils import device_utils
@@ -24,7 +24,6 @@ def add_device():
         device = Device(**schema)
 
         db.session.add(device)
-        db.session.commit()
 
         return Response(status=201)
 
@@ -156,6 +155,8 @@ def run_scan(uuid):
         abort(404)
 
     parameters = request.get_json()
+
+    file_name = parameters.get("file_name")
     resolution = parameters.get("resolution")
     extension = parameters.get("extension")
 
@@ -175,6 +176,10 @@ def run_scan(uuid):
                                               update_progress_callback=devices_processes_manager.set_scan_progress_for_device)
 
         devices_processes_manager.set_device_availability_state(device.device_id, True)
+
+        file = ScanFile(name=file_name)
+        db.session.add(file)
+        db.session.commit()
 
         return Response(status=200 if file_uuid else 500)
 
