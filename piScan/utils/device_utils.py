@@ -1,7 +1,9 @@
 import subprocess
 import uuid
 import os
+import shutil
 import re
+import tempfile
 
 
 def parse_device_options(options_output):
@@ -82,10 +84,12 @@ def get_device_options(device_id):
 
 
 def perform_scan(device_id, file_path, extension, resolution, update_progress_callback=None):
+    tmp_file_prefix = "piscan_file_"
     file_uuid = uuid.uuid4().hex
-    file_path = os.path.join(file_path, file_uuid)
+    file_tmp_path = os.path.join(tempfile.gettempdir(), f"{tmp_file_prefix}{file_uuid}")
+    file_target_path = os.path.join(file_path, file_uuid)
 
-    cmd = f"scanimage -d {device_id} --progress --resolution {resolution} --format {extension} > {file_path}"
+    cmd = f"scanimage -d {device_id} --progress --resolution {resolution} --format {extension} > {file_tmp_path}"
 
     try:
         process = subprocess.Popen(cmd,
@@ -101,6 +105,9 @@ def perform_scan(device_id, file_path, extension, resolution, update_progress_ca
 
                     progress = float(result.group(1).strip())
                     update_progress_callback(device_id, progress)
+
+        if os.path.exists(file_tmp_path):
+            shutil.copy2(file_tmp_path, file_target_path)
 
     except subprocess.CalledProcessError:
         pass
