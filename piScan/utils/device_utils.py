@@ -4,6 +4,7 @@ import os
 import shutil
 import re
 import tempfile
+from configs.config import Config
 
 
 def parse_device_options(options_output):
@@ -83,11 +84,11 @@ def get_device_options(device_id):
         return None
 
 
-def perform_scan(device_id, files_root_path, extension, resolution, update_progress_callback=None):
+def perform_scan(device_id, extension, resolution, update_progress_callback=None):
     tmp_file_prefix = "piscan_file_"
     file_uuid = uuid.uuid4().hex
     file_tmp_path = os.path.join(tempfile.gettempdir(), f"{tmp_file_prefix}{file_uuid}")
-    file_target_path = os.path.join(files_root_path, file_uuid)
+    file_target_path = os.path.join(Config.SCAN_FILES_DIR_PATH, file_uuid)
 
     cmd = f"scanimage -d {device_id} --progress --resolution {resolution} --format {extension} > {file_tmp_path}"
 

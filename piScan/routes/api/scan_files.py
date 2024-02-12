@@ -1,9 +1,9 @@
-from flask import Blueprint, request, Response, abort, jsonify, send_file, current_app
+from flask import Blueprint, request, Response, abort, jsonify, send_file
 from marshmallow.exceptions import ValidationError
 from piScan.models import ScanFile
 from piScan.schemas.scan_file import ScanFileSchema
 from piScan import db
-import os
+from piScan.utils import files_utils
 
 
 blueprint = Blueprint("scan_files", __name__)
@@ -37,7 +37,7 @@ def download_scan_file(uuid):
         abort(404)
 
     file_name = f"{file.name if file.name else file.uuid}.{file.extension}"
-    file_path = os.path.join(current_app.config.get("SCAN_FILES_DIR_PATH"), file.uuid)
+    file_path = files_utils.get_path_to_file(file.uuid)
 
     return send_file(path_or_file=file_path, as_attachment=True, download_name=file_name)
 

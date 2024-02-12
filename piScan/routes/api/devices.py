@@ -1,10 +1,9 @@
-from flask import Blueprint, request, Response, abort, jsonify, current_app
+from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat, ScanFile
 from piScan.schemas.device import DeviceSchema
 from piScan import db, exceptions, devices_processes_manager
 from piScan.utils import device_utils, files_utils
-
 
 blueprint = Blueprint("devices", __name__)
 
@@ -170,17 +169,17 @@ def run_scan(uuid):
             return jsonify(error="unsupported resolution or extension"), 400
 
         devices_processes_manager.set_device_availability_state(device.device_id, False)
+        update_progress_callback = devices_processes_manager.set_scan_progress_for_device
 
-        files_root_path = current_app.config["SCAN_FILES_DIR_PATH"]
-        file_uuid = device_utils.perform_scan(device.device_id, files_root_path, extension, resolution,
-                                              update_progress_callback=devices_processes_manager.set_scan_progress_for_device)
+        file_uuid = device_utils.perform_scan(device.device_id, extension, resolution,
+                                              update_progress_callback=update_progress_callback)
 
         devices_processes_manager.set_device_availability_state(device.device_id, True)
 
         if not file_uuid:
             abort(500)
 
-        width, height, size = files_utils.get_file_details(files_root_path, file_uuid)
+        width, height, size = files_utils.get_file_details(file_uuid)
 
         file = ScanFile(uuid=file_uuid, name=file_name, extension=extension,
                         width=width, height=height, size=size)
