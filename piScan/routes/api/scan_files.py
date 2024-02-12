@@ -5,7 +5,6 @@ from piScan.schemas.scan_file import ScanFileSchema
 from piScan import db
 from piScan.utils import files_utils
 
-
 blueprint = Blueprint("scan_files", __name__)
 
 
@@ -40,6 +39,20 @@ def download_scan_file(uuid):
     file_path = files_utils.get_path_to_file(file.uuid)
 
     return send_file(path_or_file=file_path, as_attachment=True, download_name=file_name)
+
+
+@blueprint.route("/<uuid>/preview", methods=["GET"])
+def get_scan_file_preview(uuid):
+    file = db.session.query(ScanFile).filter_by(uuid=uuid).first()
+
+    if not file:
+        abort(404)
+
+    file_path = files_utils.get_path_to_file(file.uuid)
+    download_name = f"{file_path}.{file.extension}"
+
+    return send_file(path_or_file=file_path, download_name=download_name,
+                     mimetype=f"image/{file.extension}", as_attachment=False)
 
 
 @blueprint.route("/<uuid>", methods=["PUT"])

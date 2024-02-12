@@ -141,3 +141,31 @@ spec.path(
         "get": download_scan_file
     },
 )
+
+scan_file_preview = {
+    "tags": [TAG],
+    "summary": "Preview Scan File by uuid",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        }
+    ],
+    "responses": {
+        "200": {},
+        "404": {
+            "description": "NOT FOUND"
+        }
+    }
+}
+
+
+spec.path(
+    path="/api/scan-files/{uuid}/preview",
+    operations={
+        "get": scan_file_preview
+    },
+)
