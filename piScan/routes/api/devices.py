@@ -159,15 +159,15 @@ def run_scan(uuid):
     resolution = parameters.get("resolution")
     extension = parameters.get("extension")
 
+    if resolution is None or extension is None:
+        return jsonify(error="one of following parameters missing: resolution, extension"), 400
+
+    scan_format = db.session.query(ScanFormat).filter_by(name=extension).first()
+
+    if resolution not in device.resolutions or scan_format not in device.scan_formats:
+        return jsonify(error="unsupported resolution or extension"), 400
+
     if devices_processes_manager.get_device_availability_state(device.device_id):
-        if resolution is None or extension is None:
-            return jsonify(error="one of following parameters missing: resolution, extension"), 400
-
-        scan_format = db.session.query(ScanFormat).filter_by(name=extension).first()
-
-        if resolution not in device.resolutions or scan_format not in device.scan_formats:
-            return jsonify(error="unsupported resolution or extension"), 400
-
         devices_processes_manager.set_device_availability_state(device.device_id, False)
         update_progress_callback = devices_processes_manager.set_scan_progress_for_device
 
