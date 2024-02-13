@@ -31,7 +31,7 @@ get_scan_files = {
             },
             "description": "sorting order by creation date (asc/desc, default desc)"
         },
-{
+        {
             "in": "query",
             "name": "search",
             "schema": {
@@ -184,6 +184,14 @@ scan_file_preview = {
             "schema": {
                 "type": "string"
             }
+        },
+        {
+            "in": "query",
+            "name": "thumbnail",
+            "schema": {
+                "type": "number"
+            },
+            "description": "show thumbnail preview"
         }
     ],
     "responses": {

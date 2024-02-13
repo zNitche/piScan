@@ -54,16 +54,19 @@ def download_scan_file(uuid):
 
 
 @blueprint.route("/<uuid>/preview", methods=["GET"])
-def get_scan_file_preview(uuid):
+def scan_file_preview(uuid):
+    show_thumbnail = int(request.args.get("thumbnail")) if request.args.get("thumbnail") else None
     file = db.session.query(ScanFile).filter_by(uuid=uuid).first()
 
     if not file:
         abort(404)
 
-    file_path = files_utils.get_path_to_file(file.uuid)
-    download_name = f"{file_path}.{file.extension}"
+    file_path = files_utils.get_path_to_file(file.uuid) if not show_thumbnail\
+        else files_utils.get_path_to_thumbnail(file.uuid)
 
-    return send_file(path_or_file=file_path, download_name=download_name,
+    file_name = f"{file_path}.{file.extension}"
+
+    return send_file(path_or_file=file_path, download_name=file_name,
                      mimetype=f"image/{file.extension}", as_attachment=False)
 
 

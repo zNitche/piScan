@@ -3,7 +3,7 @@ from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat, ScanFile
 from piScan.schemas.device import DeviceSchema
 from piScan import db, exceptions, devices_processes_manager
-from piScan.utils import device_utils, files_utils
+from piScan.utils import device_utils, images_utils
 
 blueprint = Blueprint("devices", __name__)
 
@@ -180,7 +180,8 @@ def run_scan(uuid):
         if not file_uuid:
             abort(500)
 
-        width, height, size = files_utils.get_file_details(file_uuid)
+        images_utils.create_thumbnail(file_uuid, extension)
+        width, height, size = images_utils.get_file_details(file_uuid)
 
         file = ScanFile(uuid=file_uuid, name=file_name, extension=extension,
                         width=width, height=height, size=size)
