@@ -6,6 +6,32 @@ spec.tag({"name": TAG})
 get_scan_files = {
     "tags": [TAG],
     "summary": "Get Scan Files",
+    "parameters": [
+        {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+                "type": "number"
+            },
+            "description": "limit of returned values (default 20)"
+        },
+        {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+                "type": "number"
+            },
+            "description": "pagination offset"
+        },
+        {
+            "in": "query",
+            "name": "order",
+            "schema": {
+                "type": "string"
+            },
+            "description": "sorting order by creation date (asc/desc, default desc)"
+        }
+    ],
     "responses": {
         "200": {
             "content": {
@@ -113,7 +139,6 @@ spec.path(
     },
 )
 
-
 download_scan_file = {
     "tags": [TAG],
     "summary": "Download Scan File by uuid",
@@ -133,7 +158,6 @@ download_scan_file = {
         }
     }
 }
-
 
 spec.path(
     path="/api/scan-files/{uuid}/download",
@@ -161,7 +185,6 @@ scan_file_preview = {
         }
     }
 }
-
 
 spec.path(
     path="/api/scan-files/{uuid}/preview",

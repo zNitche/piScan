@@ -10,10 +10,21 @@ blueprint = Blueprint("scan_files", __name__)
 
 @blueprint.route("/", methods=["GET"])
 def get_scan_files():
-    schema = ScanFileSchema(many=True)
-    files = schema.dump(db.session.query(ScanFile).all())
+    limit = request.args.get("limit") or 20
+    offset = request.args.get("offset") or 0
 
-    return files
+    order_param = request.args.get("order")
+    order = order_param if order_param in ["desc", "asc"] else "desc"
+
+    order_by = ScanFile.created_at
+
+    schema = ScanFileSchema(many=True)
+    files = (db.session.query(ScanFile)
+             .order_by(order_by.desc() if order == "desc" else order_by.asc())
+             .limit(limit)
+             .offset(offset))
+
+    return schema.dump(files)
 
 
 @blueprint.route("/<uuid>", methods=["GET"])
