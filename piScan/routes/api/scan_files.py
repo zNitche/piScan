@@ -12,15 +12,16 @@ blueprint = Blueprint("scan_files", __name__)
 def get_scan_files():
     limit = request.args.get("limit") or 20
     offset = request.args.get("offset") or 0
-
     order_param = request.args.get("order")
-    order = order_param if order_param in ["desc", "asc"] else "desc"
+    search_string = request.args.get("search") or ""
 
+    order = order_param if order_param in ["desc", "asc"] else "desc"
     order_by = ScanFile.created_at
 
     schema = ScanFileSchema(many=True)
     files = (db.session.query(ScanFile)
              .order_by(order_by.desc() if order == "desc" else order_by.asc())
+             .filter(ScanFile.name.contains(search_string))
              .limit(limit)
              .offset(offset))
 

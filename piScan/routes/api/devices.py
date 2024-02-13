@@ -23,6 +23,7 @@ def add_device():
         device = Device(**schema)
 
         db.session.add(device)
+        db.session.commit()
 
         return Response(status=201)
 
@@ -155,7 +156,7 @@ def run_scan(uuid):
 
     parameters = request.get_json()
 
-    file_name = parameters.get("file_name")
+    file_name = parameters.get("file_name") or ""
     resolution = parameters.get("resolution")
     extension = parameters.get("extension")
 

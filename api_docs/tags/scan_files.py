@@ -30,6 +30,14 @@ get_scan_files = {
                 "type": "string"
             },
             "description": "sorting order by creation date (asc/desc, default desc)"
+        },
+{
+            "in": "query",
+            "name": "search",
+            "schema": {
+                "type": "string"
+            },
+            "description": "search by file name"
         }
     ],
     "responses": {
