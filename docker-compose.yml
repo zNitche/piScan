@@ -1,0 +1,23 @@
+version: "3"
+services:
+  redis:
+    image: redis:7.2-alpine
+    command: --port 6000
+    container_name: redis
+    restart: unless-stopped
+
+  app:
+    depends_on:
+      - redis
+    container_name: pi_scan
+    command: /bin/sh -c "/pi_scan/scripts/entrypoint.sh"
+    build: .
+    restart: unless-stopped
+    ports:
+      - "6363:8000"
+    volumes:
+      - ${DB_PATH}:/pi_scan/database
+      - ${LOGS_PATH}:/pi_scan/logs
+      - ${FILES_PATH}:/pi_scan/files
+    env_file:
+      - .env

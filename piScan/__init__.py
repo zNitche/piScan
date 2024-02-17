@@ -15,9 +15,12 @@ devices_processes_manager = DevicesProcessesManager()
 
 def generate_docs(app):
     if app.config.get("HOST_DOCS"):
-        from generate_swagger_docs import generate
+        swagger_json_path = app.config.get("SWAGGER_SCHEMA_PATH")
 
-        generate()
+        if swagger_json_path and not os.path.exists(swagger_json_path):
+            from generate_swagger_docs import generate
+
+            generate()
 
 
 def register_blueprints(app):

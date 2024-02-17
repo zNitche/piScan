@@ -19,3 +19,4 @@ class Config:
 
     HOST_DOCS = int(os.getenv("HOST_DOCS", 0))
     SWAGGER_SCHEMA_PATH = os.path.join(PROJECT_ROOT, "swagger.json")
+    SWAGGER_SERVERS = os.getenv("SWAGGER_SERVERS")
