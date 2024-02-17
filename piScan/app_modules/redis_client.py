@@ -40,9 +40,9 @@ class RedisClient:
         with self.db_session(raise_exception=True) as session:
             session.flushdb()
 
-    def set_value(self, key, value):
+    def set_value(self, key, value, ttl=30):
         with self.db_session() as session:
-            session.set(key, json.dumps(value))
+            session.set(key, json.dumps(value), ex=ttl)
 
     def get_value(self, key):
         with self.db_session() as session:
