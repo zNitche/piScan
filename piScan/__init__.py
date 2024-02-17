@@ -13,6 +13,13 @@ cache_client = RedisClient(0)
 devices_processes_manager = DevicesProcessesManager()
 
 
+def generate_docs(app):
+    if app.config.get("HOST_DOCS"):
+        from generate_swagger_docs import generate
+
+        generate()
+
+
 def register_blueprints(app):
     from piScan import routes
 
@@ -49,6 +56,7 @@ def create_app(config_class=None):
     app.secret_key = os.urandom(25)
     app.config.from_object(config_class)
 
+    generate_docs(app)
     init_modules(app)
 
     with app.app_context():
