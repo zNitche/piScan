@@ -23,6 +23,17 @@ def generate_docs(app):
             generate()
 
 
+def init_files_structure(app):
+    paths = [
+        app.config["SCAN_FILES_DIR_PATH"],
+        app.config["SCAN_FILES_THUMBNAILS_DIR_PATH"]
+    ]
+
+    for path in paths:
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+
 def register_blueprints(app):
     from piScan import routes
 
@@ -59,7 +70,9 @@ def create_app(config_class=None):
     app.secret_key = os.urandom(25)
     app.config.from_object(config_class)
 
+    init_files_structure(app)
     generate_docs(app)
+
     init_modules(app)
 
     with app.app_context():
