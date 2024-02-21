@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM ubuntu:jammy
 
 COPY . /pi_scan
 WORKDIR /pi_scan
