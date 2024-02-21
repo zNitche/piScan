@@ -57,7 +57,12 @@ device_options = {
     ],
     "responses": {
         "200": {
-            "description": "ok"
+            "description": "ok",
+            "content": {
+                "application/json": {
+                    "schema": "DeviceOptions"
+                }
+            }
         },
         "404": {
             "description": "device not not found"
