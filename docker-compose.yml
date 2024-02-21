@@ -8,6 +8,8 @@ services:
 
   app:
     privileged: true
+    security_opt:
+      - "apparmor:unconfined"
     depends_on:
       - redis
     container_name: pi_scan
@@ -20,5 +22,7 @@ services:
       - ${DB_PATH}:/pi_scan/database
       - ${LOGS_PATH}:/pi_scan/logs
       - ${FILES_PATH}:/pi_scan/files
+      - /var/run/dbus:/var/run/dbus
+      - /dev/bus/usb:/dev/bus/usb
     env_file:
       - .env
