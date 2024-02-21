@@ -3,10 +3,8 @@ import os
 from piScan.app_modules.redis_client import RedisClient
 from piScan.app_modules.devices_processes_manager import DevicesProcessesManager
 from piScan.database.db import Database
+from config import Config
 
-
-APP_ROOT = os.path.abspath(os.path.dirname(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 db = Database()
 cache_client = RedisClient(0)
@@ -59,12 +57,7 @@ def init_modules(app):
     devices_processes_manager.setup(devices_processes_manager_cache_client)
 
 
-def create_app(config_class=None):
-    if not config_class:
-        from configs.config import Config
-
-        config_class = Config
-
+def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=False)
 
     app.secret_key = os.urandom(25)

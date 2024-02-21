@@ -1,5 +1,10 @@
+import dotenv
 import os
-from piScan import PROJECT_ROOT
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+APP_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 'piScan'))
+
+dotenv.load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 
 class Config:

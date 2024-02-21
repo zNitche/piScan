@@ -1,7 +1,7 @@
 from alembic import command, config
 import os
 import shutil
-from piScan import PROJECT_ROOT
+from config import PROJECT_ROOT
 
 
 def get_config(migrations_dir, db_engine):

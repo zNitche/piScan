@@ -4,7 +4,7 @@ import os
 import shutil
 import re
 import tempfile
-from configs.config import Config
+from config import Config
 
 
 def parse_device_options(options_output):

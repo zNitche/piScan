@@ -1,5 +1,5 @@
 import os
-from configs.config import Config
+from config import Config
 
 
 def get_path_to_file(file_uuid):

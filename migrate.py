@@ -1,6 +1,6 @@
 from piScan.database.migrations import init_migrations, migrate
 from piScan.database.db import Database
-from configs.config import Config
+from config import Config
 
 
 def main():

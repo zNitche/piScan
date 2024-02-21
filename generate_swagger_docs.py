@@ -1,9 +1,8 @@
 from api_docs import spec
-from configs.config import Config
+from config import Config, PROJECT_ROOT
 import json
 import dotenv
 import os
-from piScan import PROJECT_ROOT
 
 
 dotenv.load_dotenv(os.path.join(PROJECT_ROOT, ".env"))

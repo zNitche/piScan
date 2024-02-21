@@ -1,6 +1,6 @@
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
-from configs.config import Config
+from config import Config
 
 spec = APISpec(
     title="piScan",

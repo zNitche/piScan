@@ -1,8 +1,5 @@
 import multiprocessing
-from configs.config import Config
-import os
-
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+from config import Config, PROJECT_ROOT
 
 
 bind = f"{Config.APP_HOST}:{Config.APP_PORT}"

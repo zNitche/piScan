@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 from piScan.utils import files_utils
-from configs.config import Config
+from config import Config
 
 
 def get_file_details(file_uuid):
