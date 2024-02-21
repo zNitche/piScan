@@ -1,4 +1,31 @@
 from piScan import create_app
+from config import Config
+import os
+
+
+def generate_docs():
+    if Config.HOST_DOCS:
+        swagger_json_path = Config.SWAGGER_SCHEMA_PATH
+
+        if swagger_json_path and not os.path.exists(swagger_json_path):
+            from generate_swagger_docs import generate
+
+            generate()
+
+
+def init_files_structure():
+    paths = [
+        Config.SCAN_FILES_DIR_PATH,
+        Config.SCAN_FILES_THUMBNAILS_DIR_PATH
+    ]
+
+    for path in paths:
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+
+init_files_structure()
+generate_docs()
 
 app = create_app()
 

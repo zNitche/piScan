@@ -11,27 +11,6 @@ cache_client = RedisClient(0)
 devices_processes_manager = DevicesProcessesManager()
 
 
-def generate_docs(app):
-    if app.config.get("HOST_DOCS"):
-        swagger_json_path = app.config.get("SWAGGER_SCHEMA_PATH")
-
-        if swagger_json_path and not os.path.exists(swagger_json_path):
-            from generate_swagger_docs import generate
-
-            generate()
-
-
-def init_files_structure(app):
-    paths = [
-        app.config["SCAN_FILES_DIR_PATH"],
-        app.config["SCAN_FILES_THUMBNAILS_DIR_PATH"]
-    ]
-
-    for path in paths:
-        if not os.path.exists(path):
-            os.mkdir(path)
-
-
 def register_blueprints(app):
     from piScan import routes
 
@@ -62,9 +41,6 @@ def create_app(config_class=Config):
 
     app.secret_key = os.urandom(25)
     app.config.from_object(config_class)
-
-    init_files_structure(app)
-    generate_docs(app)
 
     init_modules(app)
 
