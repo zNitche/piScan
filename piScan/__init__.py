@@ -7,8 +7,28 @@ from config import Config
 
 
 db = Database()
-cache_client = RedisClient(0)
 devices_processes_manager = DevicesProcessesManager()
+
+
+def generate_docs():
+    if Config.HOST_DOCS:
+        swagger_json_path = Config.SWAGGER_SCHEMA_PATH
+
+        if swagger_json_path and not os.path.exists(swagger_json_path):
+            from generate_swagger_docs import generate
+
+            generate()
+
+
+def init_files_structure():
+    paths = [
+        Config.SCAN_FILES_DIR_PATH,
+        Config.SCAN_FILES_THUMBNAILS_DIR_PATH
+    ]
+
+    for path in paths:
+        if not os.path.exists(path):
+            os.mkdir(path)
 
 
 def register_blueprints(app):
@@ -28,19 +48,17 @@ def init_modules(app):
     redis_url = app.config["REDIS_URI"]
     redis_port = int(app.config["REDIS_PORT"])
 
-    cache_client.setup(redis_url, redis_port)
-
     devices_processes_manager_cache_client = RedisClient(1)
     devices_processes_manager_cache_client.setup(redis_url, redis_port)
 
     devices_processes_manager.setup(devices_processes_manager_cache_client)
 
 
-def create_app(config_class=Config):
+def create_app():
     app = Flask(__name__, instance_relative_config=False)
 
     app.secret_key = os.urandom(25)
-    app.config.from_object(config_class)
+    app.config.from_object(Config)
 
     init_modules(app)
 
