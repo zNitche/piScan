@@ -8,8 +8,6 @@ services:
 
   app:
     privileged: true
-    security_opt:
-      - "apparmor:unconfined"
     depends_on:
       - redis
     container_name: pi_scan
