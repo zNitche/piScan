@@ -188,3 +188,30 @@ spec.path(
         "get": scan_progress
     },
 )
+
+connected_devices = {
+    "tags": [TAG],
+    "summary": "Get connected devices",
+    "responses": {
+        "200": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "array",
+                        "items": "ConnectedDeviceInfoSchema"
+                    }
+                }
+            }
+        },
+        "500": {
+            "description": ""
+        }
+    }
+}
+
+spec.path(
+    path="/api/devices/list-connected",
+    operations={
+        "get": connected_devices
+    },
+)
