@@ -117,3 +117,31 @@ def perform_scan(device_id, extension, resolution, update_progress_callback=None
         pass
 
     return file_uuid if os.path.exists(file_target_path) else None
+
+
+def parse_connected_devices(raw_data):
+    data = []
+
+    for row in raw_data:
+        regex = re.compile("`(.*?)\'.*((?<=is a ).*$)")
+        result = regex.search(row)
+
+        if result:
+            device_id = result.group(1)
+            name = result.group(2)
+
+            data.append({
+                "name": name,
+                "device_id": device_id
+            })
+
+    return data
+
+
+def get_connected_devices():
+    try:
+        output = subprocess.check_output(f"scanimage --list-devices".split()).decode("utf-8")
+
+        return parse_connected_devices(output.split("\n"))
+    except subprocess.CalledProcessError:
+        return []

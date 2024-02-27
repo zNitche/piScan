@@ -192,3 +192,10 @@ def run_scan(uuid):
 
     else:
         return jsonify(error="device is currently unavailable"), 500
+
+
+@blueprint.route("/list-connected", methods=["GET"])
+def list_connected_devices():
+    devices = device_utils.get_connected_devices()
+
+    return devices, 200
