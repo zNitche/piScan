@@ -1,4 +1,5 @@
 import multiprocessing
+import os
 from config import Config, PROJECT_ROOT
 
 
@@ -13,5 +14,5 @@ timeout = 10
 keepalive = 5
 
 loglevel = "error"
-# accesslog = os.path.join(PROJECT_ROOT, "logs", "access.log")
-# errorlog = os.path.join(PROJECT_ROOT, "logs", "error.log")
+accesslog = os.path.join(PROJECT_ROOT, "logs", "access.log")
+errorlog = os.path.join(PROJECT_ROOT, "logs", "error.log")
