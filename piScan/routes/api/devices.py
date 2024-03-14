@@ -2,6 +2,7 @@ from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
 from piScan.models import Device, ScanFormat, ScanFile
 from piScan.schemas.device import DeviceSchema
+from piScan.schemas.connected_device_info import ConnectedDeviceInfoSchema
 from piScan import db, exceptions, devices_processes_manager
 from piScan.utils import device_utils, images_utils
 
@@ -197,5 +198,11 @@ def run_scan(uuid):
 @blueprint.route("/list-connected", methods=["GET"])
 def list_connected_devices():
     devices = device_utils.get_connected_devices()
+    devices_ids_in_db = [device.device_id for device in db.session.query(Device).all()]
 
-    return devices, 200
+    for device in devices:
+        device["is_added"] = device["device_id"] in devices_ids_in_db
+
+    schema = ConnectedDeviceInfoSchema(many=True)
+
+    return schema.dump(devices), 200

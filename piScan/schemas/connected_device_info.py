@@ -7,3 +7,4 @@ class ConnectedDeviceInfoSchema(Schema):
 
     name = fields.String(required=True, validate=validate.Length(min=2, max=50))
     device_id = fields.String(required=True, validate=validate.Length(min=2, max=100))
+    is_added = fields.Bool(required=True)
