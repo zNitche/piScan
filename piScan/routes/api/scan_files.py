@@ -26,7 +26,9 @@ def get_scan_files():
              .limit(limit)
              .offset(offset))
 
-    return schema.dump(scan_files_service.get_scan_files_with_details(files))
+    response_files = [scan_files_service.get_scan_file_with_details(file) for file in files]
+
+    return schema.dump(response_files)
 
 
 @blueprint.route("/<uuid>", methods=["GET"])
@@ -38,7 +40,7 @@ def get_scan_file(uuid):
 
     schema = ScanFileSchema()
 
-    return schema.dump(file)
+    return schema.dump(scan_files_service.get_scan_file_with_details(file))
 
 
 @blueprint.route("/<uuid>/download", methods=["GET"])
