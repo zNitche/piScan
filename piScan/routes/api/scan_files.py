@@ -1,9 +1,10 @@
-from flask import Blueprint, request, Response, abort, jsonify, send_file
+from flask import Blueprint, request, Response, abort, jsonify, send_file, url_for
 from marshmallow.exceptions import ValidationError
 from piScan.models import ScanFile
 from piScan.schemas.scan_file import ScanFileSchema
 from piScan import db
 from piScan.utils import files_utils
+from piScan.services import scan_files_service
 
 blueprint = Blueprint("scan_files", __name__)
 
@@ -25,7 +26,7 @@ def get_scan_files():
              .limit(limit)
              .offset(offset))
 
-    return schema.dump(files)
+    return schema.dump(scan_files_service.get_scan_files_with_details(files))
 
 
 @blueprint.route("/<uuid>", methods=["GET"])
@@ -63,7 +64,7 @@ def scan_file_preview(uuid):
     if not file:
         abort(404)
 
-    file_path = files_utils.get_path_to_file(file.uuid) if not show_thumbnail\
+    file_path = files_utils.get_path_to_file(file.uuid) if not show_thumbnail \
         else files_utils.get_path_to_thumbnail(file.uuid)
 
     file_name = f"{file_path}.{file.extension}"
