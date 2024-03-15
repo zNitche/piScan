@@ -21,12 +21,15 @@ def get_devices():
 def add_device():
     try:
         schema = DeviceSchema().load(request.get_json())
-        device = Device(**schema)
+        device = db.session.query(Device).filter_by(device_id=schema["device_id"]).first()
 
-        db.session.add(device)
-        db.session.commit()
+        if not device:
+            device = Device(**schema)
 
-        return Response(status=201)
+            db.session.add(device)
+            db.session.commit()
+
+        return Response(status=200)
 
     except ValidationError as e:
         return jsonify(error=str(e)), 400
