@@ -1,10 +1,10 @@
 from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
-from piScan.models import Device, ScanFormat, ScanFile
-from piScan.schemas.device import DeviceSchema
-from piScan.schemas.connected_device_info import ConnectedDeviceInfoSchema
-from piScan import db, exceptions, devices_processes_manager
-from piScan.utils import device_utils, images_utils
+from piscan.models import Device, ScanFormat, ScanFile
+from piscan.schemas.device import DeviceSchema
+from piscan.schemas.connected_device_info import ConnectedDeviceInfoSchema
+from piscan import db, exceptions, devices_processes_manager
+from piscan.utils import device_utils, images_utils
 
 blueprint = Blueprint("devices", __name__)
 
@@ -22,6 +22,9 @@ def add_device():
     try:
         schema = DeviceSchema().load(request.get_json())
         device = db.session.query(Device).filter_by(device_id=schema["device_id"]).first()
+
+        import time
+        time.sleep(10)
 
         if not device:
             device = Device(**schema)

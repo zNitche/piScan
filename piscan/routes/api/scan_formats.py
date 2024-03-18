@@ -1,8 +1,8 @@
 from flask import Blueprint, request, Response, abort, jsonify
 from marshmallow.exceptions import ValidationError
-from piScan.models import ScanFormat
-from piScan.schemas.scan_format import ScanFormatSchema
-from piScan import db
+from piscan.models import ScanFormat
+from piscan.schemas.scan_format import ScanFormatSchema
+from piscan import db
 
 
 blueprint = Blueprint("scan_formats", __name__)

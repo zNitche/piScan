@@ -1,5 +1,5 @@
-from piScan.database.migrations import init_migrations, migrate
-from piScan.database.db import Database
+from piscan.database.migrations import init_migrations, migrate
+from piscan.database.db import Database
 from config import Config
 
 

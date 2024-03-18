@@ -1,10 +1,10 @@
 from flask import Blueprint, request, Response, abort, jsonify, send_file, url_for
 from marshmallow.exceptions import ValidationError
-from piScan.models import ScanFile
-from piScan.schemas.scan_file import ScanFileSchema
-from piScan import db
-from piScan.utils import files_utils
-from piScan.services import scan_files_service
+from piscan.models import ScanFile
+from piscan.schemas.scan_file import ScanFileSchema
+from piscan import db
+from piscan.utils import files_utils
+from piscan.services import scan_files_service
 
 blueprint = Blueprint("scan_files", __name__)
 

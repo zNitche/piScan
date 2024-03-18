@@ -1,17 +1,16 @@
-from piScan import db
+from piscan import db
 from flask import current_app
 
-from piScan.routes import core
-from piScan.routes import api
-from piScan.routes import docs
+from piscan.routes import core
+from piscan.routes import api
+from piscan.routes import docs
 
 
 @current_app.after_request
 def after_request(response):
     # meant to be LAN only so we don't have to care about strict cors
     response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS")
-    response.headers.add("Access-Control-Allow-Headers", "Origin,Content-Type")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type")
 
     return response
 

@@ -1,5 +1,5 @@
 from api_docs.spec import spec
-from piScan.schemas import (device, scan_format, scan_file, device_options,
+from piscan.schemas import (device, scan_format, scan_file, device_options,
                             connected_device_info, image, image_details)
 
 

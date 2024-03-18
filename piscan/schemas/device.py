@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from piScan.schemas.scan_format import ScanFormatSchema
+from piscan.schemas.scan_format import ScanFormatSchema
 
 
 class DeviceSchema(Schema):

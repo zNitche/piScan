@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DATETIME
 from sqlalchemy.orm import relationship, mapped_column
-from piScan.database.db import Base
-from piScan import exceptions
+from piscan.database.db import Base
+from piscan import exceptions
 import uuid
 from datetime import datetime
 

@@ -1,8 +1,8 @@
 from flask import Flask
 import os
-from piScan.app_modules.redis_client import RedisClient
-from piScan.app_modules.devices_processes_manager import DevicesProcessesManager
-from piScan.database.db import Database
+from piscan.app_modules.redis_client import RedisClient
+from piscan.app_modules.devices_processes_manager import DevicesProcessesManager
+from piscan.database.db import Database
 from config import Config
 
 
@@ -32,7 +32,7 @@ def init_files_structure():
 
 
 def register_blueprints(app):
-    from piScan import routes
+    from piscan import routes
 
     app.register_blueprint(routes.core.blueprint)
     app.register_blueprint(routes.api.blueprint)

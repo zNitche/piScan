@@ -1,6 +1,6 @@
 from PIL import Image
 import os
-from piScan.utils import files_utils
+from piscan.utils import files_utils
 from config import Config
 
 

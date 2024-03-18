@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
-from piScan.schemas.image import ImageSchema
-from piScan.schemas.image_details import ImageDetailsSchema
+from piscan.schemas.image import ImageSchema
+from piscan.schemas.image_details import ImageDetailsSchema
 
 
 class ScanFileSchema(Schema):

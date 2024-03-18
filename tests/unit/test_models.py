@@ -1,4 +1,4 @@
-from piScan import models
+from piscan import models
 
 
 def test_device():

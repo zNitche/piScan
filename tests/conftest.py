@@ -1,5 +1,5 @@
 import pytest
-from piScan import create_app
+from piscan import create_app
 
 
 @pytest.fixture(scope="session")

@@ -1,4 +1,4 @@
-from piScan import create_app, init_files_structure, generate_docs
+from piscan import create_app, init_files_structure, generate_docs
 import logging
 
 
