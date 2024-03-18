@@ -23,9 +23,6 @@ def add_device():
         schema = DeviceSchema().load(request.get_json())
         device = db.session.query(Device).filter_by(device_id=schema["device_id"]).first()
 
-        import time
-        time.sleep(10)
-
         if not device:
             device = Device(**schema)
 
