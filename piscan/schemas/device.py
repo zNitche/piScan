@@ -4,7 +4,7 @@ from piscan.schemas.scan_format import ScanFormatSchema
 
 class DeviceSchema(Schema):
     class Meta:
-        dump_only = ["uuid", "scan_formats", "resolutions"]
+        dump_only = ["uuid", "scan_formats", "resolutions", "device_id"]
 
     uuid = fields.String()
     name = fields.String(required=True, validate=validate.Length(min=2, max=50))

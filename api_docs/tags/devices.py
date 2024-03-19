@@ -26,7 +26,7 @@ create_device = {
     "requestBody": {
         "content": {
             "application/json": {
-                "schema": "Device"
+                "schema": "NewDevice"
             }
         }
     },
@@ -96,11 +96,41 @@ remove_device = {
     }
 }
 
+update_device = {
+    "tags": [TAG],
+    "summary": "Update device by uuid",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "uuid",
+            "schema": {
+                "type": "string"
+            }
+        }
+    ],
+    "requestBody": {
+        "content": {
+            "application/json": {
+                "schema": "Device"
+            }
+        }
+    },
+    "responses": {
+        "200": {
+            "description": "Device has been updated successfully"
+        },
+        "404": {
+            "description": "NOT FOUND"
+        }
+    }
+}
+
 spec.path(
     path="/api/devices/{uuid}",
     operations={
         "get": get_device,
         "delete": remove_device,
+        "put": update_device
     },
 )
 
@@ -191,12 +221,7 @@ add_scan_resolution_for_device = {
     "requestBody": {
         "content": {
             "application/json": {
-                "schema": {
-                    "type": "array",
-                    "items": {
-                        "type": "number"
-                    }
-                }
+                "schema": "ScanFile"
             }
         }
     },

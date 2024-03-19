@@ -198,7 +198,7 @@ connected_devices = {
                 "application/json": {
                     "schema": {
                         "type": "array",
-                        "items": "ConnectedDeviceInfoSchema"
+                        "items": "ConnectedDeviceInfo"
                     }
                 }
             }

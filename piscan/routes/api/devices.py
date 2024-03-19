@@ -3,6 +3,7 @@ from marshmallow.exceptions import ValidationError
 from piscan.models import Device, ScanFormat, ScanFile
 from piscan.schemas.device import DeviceSchema
 from piscan.schemas.connected_device_info import ConnectedDeviceInfoSchema
+from piscan.schemas.new_device import NewDeviceSchema
 from piscan import db, exceptions, devices_processes_manager
 from piscan.utils import device_utils, images_utils
 
@@ -20,7 +21,7 @@ def get_devices():
 @blueprint.route("/", methods=["POST"])
 def add_device():
     try:
-        schema = DeviceSchema().load(request.get_json())
+        schema = NewDeviceSchema().load(request.get_json())
         device = db.session.query(Device).filter_by(device_id=schema["device_id"]).first()
 
         if not device:
@@ -59,6 +60,23 @@ def remove_device(uuid):
     db.session.commit()
 
     return Response(status=200)
+
+
+@blueprint.route("/<uuid>", methods=["PUT"])
+def update_device(uuid):
+    device = db.session.query(Device).filter_by(uuid=uuid).first()
+
+    if not device:
+        abort(404)
+
+    try:
+        schema = DeviceSchema().load(request.get_json())
+        db.update_instance(device, schema)
+
+        return Response(status=200)
+
+    except ValidationError as e:
+        return jsonify(error=str(e)), 400
 
 
 @blueprint.route("/<device_uuid>/format/<format_uuid>", methods=["POST"])
