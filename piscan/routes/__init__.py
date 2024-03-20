@@ -10,6 +10,7 @@ from piscan.routes import docs
 def after_request(response):
     # meant to be LAN only so we don't have to care about strict cors
     response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
 
     return response
