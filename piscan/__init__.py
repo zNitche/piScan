@@ -34,6 +34,8 @@ def init_files_structure():
 def register_blueprints(app):
     from piscan import routes
 
+    app.url_map.strict_slashes = False
+
     app.register_blueprint(routes.core.blueprint)
     app.register_blueprint(routes.api.blueprint)
 
