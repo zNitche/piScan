@@ -221,7 +221,12 @@ add_scan_resolution_for_device = {
     "requestBody": {
         "content": {
             "application/json": {
-                "schema": "ScanFile"
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
             }
         }
     },
