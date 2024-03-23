@@ -4,6 +4,7 @@ from piscan.models import Device, ScanFormat, ScanFile
 from piscan.schemas.device import DeviceSchema
 from piscan.schemas.connected_device_info import ConnectedDeviceInfoSchema
 from piscan.schemas.new_device import NewDeviceSchema
+from piscan.schemas.scan_format import ScanFormatSchema
 from piscan import db, exceptions, devices_processes_manager
 from piscan.utils import device_utils, images_utils
 
@@ -77,6 +78,17 @@ def update_device(uuid):
 
     except ValidationError as e:
         return jsonify(error=str(e)), 400
+
+
+@blueprint.route("/<device_uuid>/scan-formats", methods=["GET"])
+def get_scan_formats_for_device(device_uuid):
+    device = db.session.query(Device).filter_by(uuid=device_uuid).first()
+
+    if not device:
+        abort(404)
+
+    formats = ScanFormatSchema(many=True).dump(device.scan_formats)
+    return formats, 200
 
 
 @blueprint.route("/<device_uuid>/format/<format_uuid>", methods=["POST"])
@@ -225,5 +237,4 @@ def list_connected_devices():
         device["is_added"] = device["device_id"] in devices_ids_in_db
 
     schema = ConnectedDeviceInfoSchema(many=True)
-
     return schema.dump(devices), 200

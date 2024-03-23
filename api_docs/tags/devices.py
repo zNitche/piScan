@@ -134,6 +134,42 @@ spec.path(
     },
 )
 
+get_formats_for_device = {
+    "tags": [TAG],
+    "summary": "Get scan formats for device",
+    "parameters": [
+        {
+            "in": "path",
+            "name": "device_uuid",
+            "schema": {
+                "type": "string"
+            }
+        },
+    ],
+    "responses": {
+        "200": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "array",
+                        "items": "ScanFormat"
+                    }
+                }
+            }
+        },
+        "404": {
+            "description": "device not found"
+        },
+    }
+}
+
+spec.path(
+    path="/api/devices/{device_uuid}/scan-formats",
+    operations={
+        "get": get_formats_for_device,
+    },
+)
+
 add_format_to_device = {
     "tags": [TAG],
     "summary": "Add scan format to device",
