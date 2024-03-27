@@ -1,5 +1,16 @@
 version: "3"
 services:
+  cron:
+    container_name: pi_scan_cron
+    build:
+      context: .
+      dockerfile: cron/Dockerfile
+    volumes:
+      - ${LOGS_PATH}:/logs
+    command: cron -f
+    env_file:
+      - .env
+
   redis:
     image: redis:7.2-alpine
     command: --port 6000

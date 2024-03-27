@@ -11,6 +11,7 @@ Flask based wrapper for SANE (in this case scan-image tool)
 - Minimalist Flask application without usage of 3rd party plugins (adapters).
 - Swagger documentation.
 - Gunicorn errors/access logging.
+- Cron based gunicorn logs clearing.
 
 ### How to use it:
 1. Setup project according to `Production Setup`.
@@ -22,6 +23,7 @@ The main goals of the project was to:
 - setup complete Flask app without 3rd party plugins (like `Flask-SQLAlchemy` or `Flask-Migrate`).
 - add some core features like data serialization and swagger docs.
 - test my own approach to flask project structure.
+- setup background process using `cron`.
 
 In the end, getting a working and functional app was a nice bonus.
 
