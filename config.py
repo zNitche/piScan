@@ -2,7 +2,7 @@ import dotenv
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-APP_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 'piScan'))
+APP_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 'piscan'))
 
 dotenv.load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
