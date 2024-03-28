@@ -2,7 +2,7 @@ from flask import Flask
 import os
 from piscan.app_modules.redis_client import RedisClient
 from piscan.app_modules.devices_processes_manager import DevicesProcessesManager
-from piscan.database.db import Database
+from piscan.db import Database
 from config import Config
 
 
